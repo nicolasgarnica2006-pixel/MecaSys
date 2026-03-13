@@ -1,9 +1,28 @@
+
+
 <?php
 session_start();
 
 if (!isset($_SESSION['id_usuario']) || $_SESSION['id_rol'] != 3) {
     header("Location: ../index.php"); 
     exit();
+}
+?>
+<?php
+session_start();
+require 'conexion.php'; // Añadimos la conexión aquí para poder consultar usuarios
+
+if (!isset($_SESSION['id_usuario']) || $_SESSION['id_rol'] != 3) {
+    header("Location: ../index.php"); 
+    exit();
+}
+
+// Consultar la base de datos para obtener todos los usuarios y mostrarlos en el select
+try {
+    $stmtUsuarios = $pdo->query("SELECT id_usuario, nombre, correo, id_rol FROM usuarios ORDER BY nombre ASC");
+    $listaUsuarios = $stmtUsuarios->fetchAll();
+} catch (PDOException $e) {
+    die("Error al cargar usuarios: " . $e->getMessage());
 }
 ?>
 <!DOCTYPE html>
@@ -104,71 +123,17 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['id_rol'] != 3) {
                 </div>
 
                 <div id="tab-añadir" class="tab-content" style="display: block;">
-                    <form action="procesar_usuario.php" method="POST">
-                        <input type="hidden" name="accion" value="crear">
-                        
-                        <div class="form-group">
-                            <label>Nombre Completo:</label>
-                            <input type="text" name="nombre" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Correo Electrónico:</label>
-                            <input type="email" name="correo" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Contraseña:</label>
-                            <input type="password" name="password" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Rol del Usuario:</label>
-                            <select name="id_rol" required>
-                                <option value="">Seleccione un rol...</option>
-                                <option value="1">Empleado</option>
-                                <option value="2">Gerente</option>
-                                <option value="3">Dueño</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn-submit">Registrar Usuario</button>
-                    </form>
-                </div>
-
-                <div id="tab-gestionar" class="tab-content">
-                    <p><i>Aquí puedes cargar una tabla dinámica o un buscador para seleccionar al usuario que deseas modificar.</i></p>
-                    
-                    <form action="procesar_usuario.php" method="POST">
-                        <input type="hidden" name="accion" value="modificar">
-                        
-                        <div class="form-group">
-                            <label>Seleccionar Usuario a modificar:</label>
+                    <div class="form-group">
+                            <label>Seleccionar Usuario a modificar o eliminar:</label>
                             <select name="id_usuario_target" required>
-                                <option value="1">Ejemplo: Juan Pérez</option>
-                                </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Nuevo Nombre (dejar en blanco para no cambiar):</label>
-                            <input type="text" name="nuevo_nombre">
-                        </div>
-                        <div class="form-group">
-                            <label>Nuevo Correo:</label>
-                            <input type="email" name="nuevo_correo">
-                        </div>
-                        <div class="form-group">
-                            <label>Nueva Contraseña:</label>
-                            <input type="password" name="nueva_password">
-                        </div>
-                        <div class="form-group">
-                            <label>Cambiar Rol:</label>
-                            <select name="nuevo_rol">
-                                <option value="">Mantener rol actual</option>
-                                <option value="1">Empleado</option>
-                                <option value="2">Gerente</option>
-                                <option value="3">Dueño</option>
+                                <option value="" disabled selected>Selecciona un usuario...</option>
+                                <?php foreach ($listaUsuarios as $user): ?>
+                                    <option value="<?php echo htmlspecialchars($user['id_usuario']); ?>">
+                                        <?php echo htmlspecialchars($user['nombre']) . ' (' . htmlspecialchars($user['correo']) . ')'; ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
-                        <button type="submit" class="btn-submit" style="background: #2196F3;">Actualizar Datos</button>
-                        
-                        <button type="submit" name="accion" value="eliminar" class="btn-submit" style="background: #f44336; margin-left: 10px;" onclick="return confirm('¿Estás seguro de eliminar este usuario?');">Eliminar Usuario</button>
-                    </form>
                 </div>
 
             </div>
