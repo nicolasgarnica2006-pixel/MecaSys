@@ -1,0 +1,151 @@
+﻿:root {
+    /* Paleta Neón y Cristal */
+    --neon-color: #00f3ff; /* Cian neón */
+    --glass-bg: rgba(255, 255, 255, 0.05); /* Fondo semi-transparente */
+    --glass-border: rgba(255, 255, 255, 0.15); /* Borde sutil del cristal */
+    --text-main: #ffffff;
+    --text-muted: #b3b3b3;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #050505; /* Fondo oscuro de respaldo */
+}
+
+/* FONDO OSCURO PARA RESALTAR EL NEÓN */
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Cambié la imagen a una más oscura/abstracta para que el cristal y el neón destaquen */
+    background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1920&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.4); /* Bastante oscuro para el contraste neón */
+    z-index: -1;
+}
+
+/* CONTENEDOR EFECTO CRISTAL (GLASSMORPHISM) */
+.login-container {
+    background: var(--glass-bg);
+    /* Aquí ocurre la magia del desenfoque del cristal */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 45px 40px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 380px;
+    border: 1px solid var(--glass-border);
+    /* Sombra oscura para separar el cristal del fondo */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+    .login-container h2 {
+        text-align: center;
+        color: var(--text-main);
+        margin-bottom: 30px;
+        font-weight: 600;
+        font-size: 26px;
+        letter-spacing: 1px;
+        /* Resplandor en el texto */
+        text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    }
+
+.input-group {
+    margin-bottom: 22px;
+}
+
+    .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-muted);
+        font-size: 13px;
+        font-weight: 500;
+        padding-left: 12px;
+        letter-spacing: 0.5px;
+    }
+
+    /* INPUTS ESTILO CRISTAL */
+    .input-group select,
+    .input-group input {
+        width: 100%;
+        padding: 14px 16px;
+        background: rgba(0, 0, 0, 0.2); /* Ligeramente más oscuros que el cristal base */
+        border: 1px solid var(--glass-border);
+        color: var(--text-main);
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        border-radius: 12px;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+        /* Estilo para las opciones del select en modo oscuro */
+        .input-group select option {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+    .input-group select {
+        appearance: none;
+        cursor: pointer;
+    }
+
+        /* EFECTO NEON GLOW AL HACER CLIC EN LOS INPUTS */
+        .input-group select:focus,
+        .input-group input:focus {
+            border-color: var(--neon-color);
+            background: rgba(0, 0, 0, 0.4);
+            /* Resplandor interior y exterior cian */
+            box-shadow: 0 0 12px rgba(0, 243, 255, 0.4), inset 0 0 6px rgba(0, 243, 255, 0.2);
+        }
+
+/* BOTÓN NEÓN */
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    color: var(--neon-color);
+    border: 2px solid var(--neon-color);
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 15px;
+    font-family: 'Poppins', sans-serif;
+    /* Resplandor neón base */
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+    /* EFECTO HOVER: SE ENCIENDE EL NEÓN */
+    .btn-submit:hover {
+        background: var(--neon-color);
+        color: #000000; /* Texto oscuro para contrastar con el fondo brillante */
+        box-shadow: 0 0 20px var(--neon-color), 0 0 40px rgba(0, 243, 255, 0.6);
+        transform: translateY(-2px);
+    }
+
+    .btn-submit:active {
+        transform: translateY(1px);
+        box-shadow: 0 0 10px var(--neon-color);
+    }
